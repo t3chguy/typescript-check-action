@@ -29,8 +29,8 @@ inputs:
     description: "Path of tsconfig file. default is '.'"
     default: './tsconfig.json'
     required: false
-  head-ts-options:
-    description: "Additional tsc options to pass when running the head commit, e.g. '--strict'"
+  ts-extra-args:
+    description: "Additional tsc options to pass, e.g. '--strict'"
     required: false
   use-check:
     description: 'Report status as a CI Check'

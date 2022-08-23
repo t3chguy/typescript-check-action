@@ -16,7 +16,7 @@ type Args = {
   repoToken: string
   directory: string
   tsConfigPath: string
-  headTsOptions: string
+  tsExtraArgs: string
   filesChanged: string[]
   filesAdded: string[]
   filesDeleted: string[]
@@ -56,7 +56,7 @@ export function getAndValidateArgs(): Args {
     repoToken: getInput('repo-token', { required: true, trimWhitespace: true }),
     directory: getInput('directory', { trimWhitespace: true }),
     tsConfigPath: getInput('ts-config-path', { trimWhitespace: true, required: true }),
-    headTsOptions: getInput('head-ts-options', { trimWhitespace: true, required: false }),
+    tsExtraArgs: getInput('ts-extra-args', { trimWhitespace: true, required: false }),
     filesChanged: (getInput('files-changed') ?? "").split(" "),
     filesAdded: (getInput('files-added') ?? "").split(" "),
     filesDeleted: (getInput('files-deleted') ?? "").split(" "),
