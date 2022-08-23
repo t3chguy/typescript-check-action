@@ -1,4 +1,4 @@
-import { getBooleanInput, getInput, info } from '@actions/core'
+import { getBooleanInput, getInput } from '@actions/core'
 
 export const enum CHECK_FAIL_MODE {
   ON_ERRORS_ADDED_IN_PR = 'added',
@@ -81,10 +81,6 @@ export function getAndValidateArgs(): Args {
     OUTPUT_BEHAVIOUR.COMMENT_AND_ANNOTATE
   ].includes(args.outputBehaviour)) {
     throw new Error(`Invalid value ${args.outputBehaviour} for input output-behaviour`)
-  }
-
-  if (args.debug) {
-    info(`[config] args: \n${JSON.stringify(args)}`)
   }
 
   return args
