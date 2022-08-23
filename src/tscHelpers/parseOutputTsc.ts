@@ -27,6 +27,7 @@ interface Matcher {
     parts: {
         name: string
         position: number
+        type?: "number"
     }[]
 }
 
@@ -38,16 +39,19 @@ export const tscMatcher: Matcher = {
         position: 1
     }, {
         name: "line",
-        position: 2
+        position: 2,
+        type: "number"
     }, {
         name: "column",
-        position: 3
+        position: 3,
+        type: "number"
     }, {
         name: "severity",
         position: 4
     }, {
         name: "code",
-        position: 5
+        position: 5,
+        type: "number"
     }, {
         name: "message",
         position: 6
@@ -63,11 +67,11 @@ export function parseTscErrorLine(str: string, matcher: Matcher): ErrorTs {
         console.error('erreur match string')
         throw error
     }
-    const result: { [k: string]: string } = {}
+    const result: { [k: string]: string | number } = {}
     arr.forEach((hash, index) => {
         const matcherHash = matcher.parts.find(part => part.position === index)
         if (matcherHash) {
-            result[matcherHash.name] = hash
+            result[matcherHash.name] = matcherHash.type === "number" ? parseInt(hash, 10) : hash
         }
     })
 

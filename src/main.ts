@@ -15,9 +15,9 @@ import { parseOutputTsc } from './tscHelpers/parseOutputTsc'
 
 export type ErrorTs = {
   fileName: string
-  line: string
-  column: string
-  code: string
+  line: number
+  column: number
+  code: number
   severity?: string
   message: string
   /** for long error messages */
