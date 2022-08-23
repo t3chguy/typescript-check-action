@@ -17,18 +17,11 @@ export type ErrorTs = {
   fileName: string
   line: string
   column: string
-  fileNameResolved?: string
   code: string
   severity?: string
   message: string
   /** for long error messages */
   extraMsg?: string
-}
-interface PullRequest {
-  number: number;
-  html_url?: string
-  body?: string
-  changed_files: number
 }
 
 async function run(): Promise<void> {

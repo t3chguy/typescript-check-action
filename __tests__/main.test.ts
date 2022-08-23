@@ -53,7 +53,6 @@ test('3. compareErrors', () => {
     column: '20',
     code: '60312',
     fileName: 'src/fakeErrors.ts',
-    fileNameResolved: 'src/fakeErrors.ts'
   }]
 
   const errorsAfter: ErrorTs[] = [{
@@ -62,14 +61,12 @@ test('3. compareErrors', () => {
     column: '20',
     code: '60312',
     fileName: 'src/fakeErrors.ts',
-    fileNameResolved: 'src/fakeErrors.ts'
   }, {
     message: 'test2',
     line: '10',
     column: '20',
     code: '60312',
     fileName: 'src/fakeErrors.ts',
-    fileNameResolved: 'src/fakeErrors.ts'
   }]
 
   const lineNumbers: FileWithLineNumbers[] = [{
