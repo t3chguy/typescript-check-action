@@ -4,7 +4,6 @@ import { setFailed } from '@actions/core'
 
 interface Cfg {
   workingDir: string
-  tsconfigPath?: string
   files?: string[]
   args?: string[]
 }
@@ -14,7 +13,7 @@ exemple d'output renvoyé
 src/main.ts(39,11): error TS1155: 'const' declarations must be initialized.
 src/main.ts(39,11): error TS7005: Variable 'hereIsAUnusedVariableToHaveAnError' implicitly has an 'any' type.
 */
-export async function runTscCli({ workingDir, tsconfigPath, args, files }: Cfg): Promise<{ output: string, error: string }> {
+export async function runTscCli({ workingDir, args, files }: Cfg): Promise<{ output: string, error: string }> {
 
   let myOutput = ''
   let myError = ''
@@ -40,9 +39,6 @@ export async function runTscCli({ workingDir, tsconfigPath, args, files }: Cfg):
     '--watch',
     'false'
   ]
-  if (tsconfigPath) {
-    execArgs.push('--project', tsconfigPath)
-  }
   if (args) {
     execArgs.push(...args)
   }

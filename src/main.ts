@@ -4,7 +4,6 @@ import * as github from '@actions/github'
 import { context, getOctokit } from '@actions/github'
 import { createCheck } from './createCheck'
 import * as fs from 'fs'
-import { parseTsConfigFile } from './tscHelpers/parseTsConfigFileToCompilerOptions'
 import { CHECK_FAIL_MODE, getAndValidateArgs, OUTPUT_BEHAVIOUR } from './getAndValidateArgs'
 import { exec } from '@actions/exec'
 import { getBodyComment } from './getBodyComment'
@@ -34,12 +33,6 @@ async function run(): Promise<void> {
 
     const workingDir = path.join(process.cwd(), args.directory)
     info(`working directory: ${workingDir}`)
-
-    const tsconfigPath = path.join(workingDir, args.tsConfigPath)
-    info(`tsconfigPath: ${tsconfigPath}`)
-    if (!fs.existsSync(tsconfigPath)) {
-      throw new Error(`could not find tsconfig.json at: ${tsconfigPath}`)
-    }
 
     const octokit = getOctokit(args.repoToken)
 
@@ -78,13 +71,8 @@ async function run(): Promise<void> {
 
     startGroup(`[current branch] compile ts files`)
 
-    const { rawParsing: rawParsingPr } = parseTsConfigFile(tsconfigPath)
-
-    info(`[current branch] : tsconfig raw parsing :\n ${JSON.stringify(rawParsingPr)}`)
-
     const { output: tscOutputCurrent } = await runTscCli({
       workingDir,
-      tsconfigPath,
       args: args.tsExtraArgs?.split(' ')
     })
 
@@ -108,17 +96,16 @@ async function run(): Promise<void> {
     //                                              BASE BRANCH
     // ***********************************************************************************************
 
-    startGroup(`[base branch] compile ts files`)
-
     await checkoutAndInstallBaseBranch({
       installScript,
       payload: context.payload,
       execOptions
     })
 
+    startGroup(`[base branch] compile ts files`)
+
     const { output: tscOutputBase } = await runTscCli({
       workingDir,
-      tsconfigPath,
       args: args.tsExtraArgs?.split(' ')
     })
 
@@ -163,7 +150,7 @@ async function run(): Promise<void> {
 
     if ([OUTPUT_BEHAVIOUR.ANNOTATE, OUTPUT_BEHAVIOUR.COMMENT_AND_ANNOTATE].includes(args.outputBehaviour)) {
       resultCompareErrors.errorsAdded.forEach(err => {
-        error(err.message, {
+        error(`${err.fileName}:${err.line}:${err.column} - ${err.message}`, {
           file: err.fileName,
           startLine: err.line,
           startColumn: err.column,

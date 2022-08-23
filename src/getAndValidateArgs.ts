@@ -15,7 +15,6 @@ export const enum CHECK_FAIL_MODE {
 type Args = {
   repoToken: string
   directory: string
-  tsConfigPath: string
   tsExtraArgs: string
   filesChanged: string[]
   filesAdded: string[]
@@ -55,7 +54,6 @@ export function getAndValidateArgs(): Args {
   const args = {
     repoToken: getInput('repo-token', { required: true, trimWhitespace: true }),
     directory: getInput('directory', { trimWhitespace: true }),
-    tsConfigPath: getInput('ts-config-path', { trimWhitespace: true, required: true }),
     tsExtraArgs: getInput('ts-extra-args', { trimWhitespace: true, required: false }),
     filesChanged: (getInput('files-changed') ?? "").split(" "),
     filesAdded: (getInput('files-added') ?? "").split(" "),

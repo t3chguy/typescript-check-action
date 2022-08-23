@@ -72,18 +72,4 @@ Value|Behaviour
 -- | -- 
 `added`| Check fails if some errors are added in the files added/modified in the PR branch.  
 `errors_in_pr`| Check fails if any errors are present in the files added/modified in the PR branch (even if already in base branche).  
-`errors_in_code`| Check fails if any errors are present in the whole branch.  
-
-## Use a specific tsconfig file
-
-By default, this actions uses tsconfig file located at './tsconfig.json'   
-
-You may want to use a different file for this action, in order to change tsc behaviour.  
-For example, if you use `watch:true` in your regular tsconfig file, you should disable watching mode.  
-
-In order to do this, you would create a specific tsconfig file (eg name `tsconfig.check.ts`) and setting accordingly the
-parameter `ts-config-path` : 
-
-```yml
-  ts-config-path: './tsconfig.check.json'
-```
+`errors_in_code`| Check fails if any errors are present in the whole branch.
