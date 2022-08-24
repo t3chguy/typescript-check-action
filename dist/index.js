@@ -563,6 +563,9 @@ async function run() {
                 }
             });
         }
+        else if (shouldFailCheck) {
+            (0, core_1.setFailed)(summary);
+        }
     }
     catch (errorRun) {
         (0, core_1.setFailed)(errorRun.message);
