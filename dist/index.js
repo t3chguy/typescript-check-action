@@ -14,41 +14,22 @@ const exec_1 = __nccwpck_require__(1514);
  * Checkout base branch of the pr, install dependencies
  */
 async function checkoutAndInstallBaseBranch({ installScript, payload, execOptions }) {
-    var _a, _b;
     (0, core_1.startGroup)(`[base branch] Checkout target branch`);
-    let baseRef;
     try {
-        baseRef = (_b = (_a = payload.pull_request) === null || _a === void 0 ? void 0 : _a.base) === null || _b === void 0 ? void 0 : _b.ref;
-        if (!baseRef)
-            throw Error('missing payload.pull_request.base.ref');
-        await (0, exec_1.exec)(`git fetch -n origin ${payload.pull_request.base.ref}`);
-        (0, core_1.info)('successfully fetched base.ref');
+        await (0, exec_1.exec)(`git fetch -n origin ${payload.pull_request.base.sha}`);
+        (0, core_1.info)('successfully fetched base.sha');
     }
-    catch (errFetchBaseRef) {
-        (0, core_1.info)(`fetching base.ref failed ${errFetchBaseRef.message}`);
+    catch (errFetchBaseSha) {
+        (0, core_1.info)(`fetching base.sha failed ${errFetchBaseSha.message}`);
         try {
-            await (0, exec_1.exec)(`git fetch -n origin ${payload.pull_request.base.sha}`);
-            (0, core_1.info)('successfully fetched base.sha');
+            await (0, exec_1.exec)(`git fetch -n`);
         }
-        catch (errFetchBaseSha) {
-            (0, core_1.info)(`fetching base.sha failed ${errFetchBaseSha.message}`);
-            try {
-                await (0, exec_1.exec)(`git fetch -n`);
-            }
-            catch (errFetch) {
-                (0, core_1.info)(`fetch failed ${errFetch.message}`);
-            }
+        catch (errFetch) {
+            (0, core_1.info)(`fetch failed ${errFetch.message}`);
         }
     }
     (0, core_1.info)('checking out and building base commit');
-    try {
-        if (!baseRef)
-            throw Error('missing payload.pull_request.base.ref');
-        await (0, exec_1.exec)(`git reset --hard ${baseRef}`);
-    }
-    catch (e) {
-        await (0, exec_1.exec)(`git reset --hard ${payload.pull_request.base.sha}`);
-    }
+    await (0, exec_1.exec)(`git reset --hard ${payload.pull_request.base.sha}`);
     (0, core_1.endGroup)();
     (0, core_1.startGroup)(`[base branch] Install Dependencies`);
     await (0, exec_1.exec)(installScript, [], execOptions);
